@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pohjoinen Manga – Suomalainen Manga-sivusto</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== HOME-SPECIFIC ===== */
+    .hero {
+      background: var(--midnight);
+      min-height: 520px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2rem;
+      padding: 4rem 2rem;
+      max-width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Big decorative snowflake */
+    .hero-bg-flake {
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 420px;
+      height: 420px;
+      opacity: 0.04;
+      font-size: 420px;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Marimekko-style circles behind text */
+    .hero-bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+    }
+    .hbc1 { width: 500px; height: 500px; background: var(--sky); top: -150px; left: -100px; }
+    .hbc2 { width: 200px; height: 200px; background: var(--sky-light); bottom: -60px; left: 30%; }
+
+    .hero-text { position: relative; padding-left: 3rem; max-width: 520px; margin: 0 auto; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(91,200,226,0.15);
+      border: 1px solid rgba(91,200,226,0.4);
+      border-radius: 20px;
+      padding: 0.3rem 1rem;
+      color: var(--sky-light);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--sky);
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.65);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Manga showcase panel */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .manga-panel-stack {
+      position: relative;
+      width: 320px;
+      height: 400px;
+    }
+
+    .manga-panel {
+      position: absolute;
+      border-radius: 8px;
+      background: var(--birch);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+
+    .mp1 {
+      width: 200px; height: 260px;
+      top: 20px; left: 10px;
+      background: #fff;
+      transform: rotate(-4deg);
+    }
+
+    .mp2 {
+      width: 200px; height: 260px;
+      top: 60px; left: 110px;
+      background: #fff;
+      transform: rotate(3deg);
+      border: 4px solid var(--sky);
+    }
+
+    .mp3 {
+      width: 120px; height: 150px;
+      top: 0; right: 0;
+      background: var(--midnight);
+      transform: rotate(6deg);
+    }
+
+    .manga-panel-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    /* Manga panel placeholder content */
+    .panel-lines {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .panel-line {
+      height: 3px;
+      background: rgba(13,43,62,0.12);
+      border-radius: 2px;
+    }
+
+    .panel-line.short { width: 60%; }
+    .panel-line.medium { width: 80%; }
+    .panel-line.full { width: 100%; }
+
+    .panel-bubble {
+      background: var(--sky-pale);
+      border: 2px solid var(--sky);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--midnight);
+    }
+
+    .panel-char {
+      font-size: 3rem;
+      line-height: 1;
+      text-align: center;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--sky);
+      padding: 1.25rem 2rem;
+    }
+
+    .stats-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--midnight);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(13,43,62,0.7);
+      margin-top: 0.2rem;
+    }
+
+    /* Featured works grid */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .work-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(13,43,62,0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .work-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(13,43,62,0.14);
+    }
+
+    .work-thumb {
+      height: 180px;
+      background: var(--midnight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(13,43,62,0.6));
+    }
+
+    .wt-blue { background: linear-gradient(135deg, var(--sky-deep), var(--midnight)); }
+    .wt-pine { background: linear-gradient(135deg, var(--pine), var(--midnight)); }
+    .wt-gold { background: linear-gradient(135deg, #7b5200, var(--midnight)); }
+
+    .work-body {
+      padding: 1.25rem;
+    }
+
+    .work-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--midnight);
+      margin: 0.5rem 0 0.25rem;
+    }
+
+    .work-meta {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .work-desc {
+      font-size: 0.875rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    /* Latest updates */
+    .updates-list {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .update-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 1px 8px rgba(13,43,62,0.06);
+      border-left: 4px solid var(--sky);
+      transition: border-color 0.2s;
+    }
+
+    .update-item:hover { border-color: var(--sky-deep); }
+
+    .update-date {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--sky-deep);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .update-info { flex: 1; }
+    .update-title { font-weight: 700; font-size: 0.9rem; color: var(--midnight); }
+    .update-sub { font-size: 0.8rem; color: var(--text-light); margin-top: 0.15rem; }
+
+    /* Two-col layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 3rem 1.5rem;
+      }
+      .hero-text { padding-left: 0; }
+      .hero-btns { justify-content: center; }
+      .hero-visual { display: none; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">Pohjoinen <span>Manga</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Etusivu</a></li>
+      <li><a href="translation.html">Käännökset</a></li>
+      <li><a href="blog.html">Blogi</a></li>
+      <li><a href="gallery.html">Galleria</a></li>
+      <li><a href="contact.html">Yhteystiedot</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hbc1 hero-bg-circle"></div>
+  <div class="hbc2 hero-bg-circle"></div>
+
+  <div class="hero-text">
+    <div class="hero-tag">❄ Suomalainen manga-sivusto</div>
+    <h1>Manga <em>suomeksi</em>, Pohjolasta maailmalle</h1>
+    <p>Tervetuloa! Täällä julkaisemme alkuperäistä mangaa ja käännöksiä suomen kielellä. Pohjoisen hiljaisuus, japanilainen taidemuoto.</p>
+    <div class="hero-btns">
+      <a href="gallery.html" class="btn btn-primary">Selaa galleriaa →</a>
+      <a href="translation.html" class="btn btn-outline">Käännösloki</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="manga-panel-stack">
+      <div class="manga-panel mp1">
+        <div class="manga-panel-inner">
+          <div class="panel-char">🌲</div>
+          <div class="panel-bubble">Lumi sataa hiljaa…</div>
+          <div class="panel-lines">
+            <div class="panel-line full"></div>
+            <div class="panel-line medium"></div>
+            <div class="panel-line short"></div>
+          </div>
+        </div>
+      </div>
+      <div class="manga-panel mp2">
+        <div class="manga-panel-inner">
+          <div class="panel-char">❄️</div>
+          <div class="panel-bubble">Odota minua!</div>
+          <div class="panel-lines">
+            <div class="panel-line full"></div>
+            <div class="panel-line full"></div>
+            <div class="panel-line medium"></div>
+          </div>
+        </div>
+      </div>
+      <div class="manga-panel mp3">
+        <div class="manga-panel-inner" style="align-items:center;justify-content:center;">
+          <div style="font-size:2.5rem;">🦌</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Sarjaa</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">148</div>
+      <div class="stat-label">Sivua käännetty</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Käännnöstiimejä</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2024</div>
+      <div class="stat-label">Aloitusvuosi</div>
+    </div>
+  </div>
+</div>
+
+<div class="mm-divider">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <div class="two-col">
+
+    <!-- LEFT: Featured works -->
+    <div>
+      <h2 class="section-title">Suositut sarjat</h2>
+      <div class="works-grid">
+
+        <div class="work-card fade-up fade-up-1">
+          <div class="work-thumb wt-blue">🌊</div>
+          <div class="work-body">
+            <span class="badge">Käynnissä</span>
+            <div class="work-title">Jäämeren Tytär</div>
+            <div class="work-meta">Toiminta · 8 luku · Päivitetty 12.5.2026</div>
+            <div class="work-desc">Nuori kalastaja löytää myyttisen olennon jäiseltä merenpohjalta. Seikkailu alkaa.</div>
+            <a href="gallery.html" class="btn btn-primary" style="font-size:0.8rem;padding:0.5rem 1rem;">Lue nyt</a>
+          </div>
+        </div>
+
+        <div class="work-card fade-up fade-up-2">
+          <div class="work-thumb wt-pine">🌲</div>
+          <div class="work-body">
+            <span class="badge pine">Valmis</span>
+            <div class="work-title">Metsän Hiljaisuus</div>
+            <div class="work-meta">Romantiikka · 5 lukua · 2025</div>
+            <div class="work-desc">Kaksi tuntematonta kohtaavat sattumalta lappilaisen metsän sylissä. Lyhytmanga.</div>
+            <a href="gallery.html" class="btn btn-outline" style="font-size:0.8rem;padding:0.5rem 1rem;">Lue nyt</a>
+          </div>
+        </div>
+
+        <div class="work-card fade-up fade-up-3">
+          <div class="work-thumb wt-gold">✨</div>
+          <div class="work-body">
+            <span class="badge gold">Uusi</span>
+            <div class="work-title">Revontulien Alla</div>
+            <div class="work-meta">Fantasia · 2 lukua · Päivitetty 10.5.2026</div>
+            <div class="work-desc">Kun revontulet syttyvät, muinaiset henget heräävät. Pohjoismainen mytologia kohtaa mangatyylin.</div>
+            <a href="gallery.html" class="btn btn-primary" style="font-size:0.8rem;padding:0.5rem 1rem;">Lue nyt</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Latest updates -->
+    <div>
+      <h2 class="section-title">Viimeisimmät</h2>
+      <div class="updates-list">
+        <div class="update-item fade-up fade-up-1">
+          <div class="update-date">12 TOUK</div>
+          <div class="update-info">
+            <div class="update-title">Jäämeren Tytär – Luku 8</div>
+            <div class="update-sub">Uusi luku julkaistu!</div>
+          </div>
+        </div>
+        <div class="update-item fade-up fade-up-2">
+          <div class="update-date">9 TOUK</div>
+          <div class="update-info">
+            <div class="update-title">Revontulien Alla – Luku 2</div>
+            <div class="update-sub">Luvussa 2 tarinaa syvennetään</div>
+          </div>
+        </div>
+        <div class="update-item fade-up fade-up-3">
+          <div class="update-date">3 TOUK</div>
+          <div class="update-info">
+            <div class="update-title">Blogi: Käännöstyön haasteet</div>
+            <div class="update-sub">Uusi blogikirjoitus</div>
+          </div>
+        </div>
+        <div class="update-item fade-up fade-up-4">
+          <div class="update-date">28 HUH</div>
+          <div class="update-info">
+            <div class="update-title">Galleria päivitetty</div>
+            <div class="update-sub">15 uutta fanart-kuvaa lisätty</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem; background: var(--midnight); border-radius: 12px; padding: 1.5rem; text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📬</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">Uutiskirje</div>
+        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem;">Saa ilmoitus uusista luvuista!</div>
+        <a href="contact.html" class="btn btn-primary" style="width:100%; display:block; text-align:center;">Tilaa →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
+  <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
+  <p style="margin-top:0.4rem;"><a href="contact.html">Ota yhteyttä</a> · <a href="blog.html">Blogi</a></p>
+</footer>
+
+</body>
+</html>

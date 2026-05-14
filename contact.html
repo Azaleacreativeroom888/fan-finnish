@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yhteystiedot – Pohjoinen Manga</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Contact info side */
+    .contact-info-block {
+      background: var(--midnight);
+      border-radius: 16px;
+      padding: 2.5rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-info-block::before {
+      content: '❄';
+      position: absolute;
+      bottom: -30px;
+      right: -20px;
+      font-size: 10rem;
+      opacity: 0.05;
+    }
+
+    .contact-info-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--sky-light);
+    }
+
+    .contact-info-block > p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(91,200,226,0.15);
+      border: 1px solid rgba(91,200,226,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 0.2rem;
+    }
+
+    .contact-value {
+      color: rgba(255,255,255,0.9);
+      font-size: 0.9rem;
+    }
+
+    .contact-value a { color: var(--sky-light); text-decoration: none; }
+    .contact-value a:hover { color: var(--sky); }
+
+    /* Social links */
+    .social-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(91,200,226,0.2);
+    }
+
+    .social-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background: rgba(91,200,226,0.1);
+      border: 1px solid rgba(91,200,226,0.25);
+      color: var(--sky-light);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .social-btn:hover { background: var(--sky); color: var(--midnight); }
+
+    /* Form side */
+    .contact-form-wrap {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 24px rgba(13,43,62,0.08);
+    }
+
+    .contact-form-wrap h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--midnight);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-form-wrap > p {
+      color: var(--text-light);
+      font-size: 0.875rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--midnight);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--sky-pale);
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--snow);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--sky);
+      box-shadow: 0 0 0 3px rgba(91,200,226,0.2);
+    }
+
+    .form-textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-check input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--sky);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .form-check label {
+      font-size: 0.825rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .submit-btn {
+      padding: 0.85rem 2rem;
+      background: var(--midnight);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .submit-btn:hover {
+      background: var(--sky-deep);
+      transform: translateY(-1px);
+    }
+
+    .submit-note {
+      font-size: 0.78rem;
+      color: var(--text-light);
+    }
+
+    /* Success state */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .success-message.show { display: block; }
+
+    .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+
+    .success-message h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--midnight);
+      margin-bottom: 0.5rem;
+    }
+
+    /* FAQ section */
+    .faq-list {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .faq-item {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 8px rgba(13,43,62,0.06);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--midnight);
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .faq-toggle {
+      color: var(--sky);
+      font-size: 1.25rem;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.25rem 1rem;
+      font-size: 0.875rem;
+      color: var(--text);
+      line-height: 1.65;
+      border-top: 1px solid var(--sky-pale);
+    }
+
+    .faq-item.open .faq-answer { display: block; }
+
+    @media (max-width: 850px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">Pohjoinen <span>Manga</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Etusivu</a></li>
+      <li><a href="translation.html">Käännökset</a></li>
+      <li><a href="blog.html">Blogi</a></li>
+      <li><a href="gallery.html">Galleria</a></li>
+      <li><a href="contact.html" class="active">Yhteystiedot</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>Yhteys<span>tiedot</span></h1>
+  <p>Olemme iloisia kuulemaan sinusta!</p>
+</div>
+
+<div class="mm-divider">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<div class="main-content">
+  <div class="contact-grid">
+
+    <!-- Left: Info -->
+    <div>
+      <div class="contact-info-block fade-up">
+        <h3>Pohjoinen Manga</h3>
+        <p>Teemme mangaa suomeksi rakkauden ja pohjoisen hengen siivittämänä. Ota yhteyttä milloin tahansa!</p>
+
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">Sähköposti</div>
+            <div class="contact-value"><a href="mailto:hei@pohjoinenmanga.fi">hei@pohjoinenmanga.fi</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">🌍</div>
+          <div>
+            <div class="contact-label">Sijainti</div>
+            <div class="contact-value">Helsinki, Suomi 🇫🇮</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">⏰</div>
+          <div>
+            <div class="contact-label">Vastausaika</div>
+            <div class="contact-value">Yleensä 2–3 arkipäivän kuluessa</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">🤝</div>
+          <div>
+            <div class="contact-label">Liity tiimiin</div>
+            <div class="contact-value">Etsimme käännnöstaidoista innokkaita! Täytä lomake.</div>
+          </div>
+        </div>
+
+        <div class="social-links">
+          <a class="social-btn" href="#">🐦 Twitter</a>
+          <a class="social-btn" href="#">📸 Instagram</a>
+          <a class="social-btn" href="#">💬 Discord</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="contact-form-wrap fade-up fade-up-1">
+      <h3>Lähetä viesti</h3>
+      <p>Kysymyksiä, yhteistyöehdotuksia tai haluatko liittyä tiimiin? Kerro meille!</p>
+
+      <div id="formContainer">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Etunimi</label>
+            <input class="form-input" type="text" placeholder="Matti" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sukunimi</label>
+            <input class="form-input" type="text" placeholder="Virtanen" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Sähköposti</label>
+          <input class="form-input" type="email" placeholder="matti@email.fi" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Aihe</label>
+          <select class="form-select">
+            <option value="">Valitse aihe…</option>
+            <option>Liity käännöstiimiin</option>
+            <option>Yhteistyöehdotus</option>
+            <option>Fanart-lähetys</option>
+            <option>Palaute / kysymys</option>
+            <option>Muu</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Viesti</label>
+          <textarea class="form-textarea" placeholder="Kirjoita viestisi tähän…"></textarea>
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" id="newsletter" />
+          <label for="newsletter">Haluan tilata uutiskirjeen ja saada tiedon uusista luvuista ja blogikirjoituksista.</label>
+        </div>
+
+        <div class="submit-row">
+          <button class="submit-btn" onclick="submitForm()">Lähetä viesti ✈</button>
+          <span class="submit-note">Emme jaa tietojasi kolmansille osapuolille.</span>
+        </div>
+      </div>
+
+      <div class="success-message" id="successMsg">
+        <div class="success-icon">❄️</div>
+        <h4>Viesti lähetetty!</h4>
+        <p style="color:var(--text-light);">Kiitos viestistäsi! Palaamme asiaan pian.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:1rem;">Takaisin etusivulle</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FAQ -->
+  <div style="margin-top: 3.5rem;">
+    <h2 class="section-title">Usein kysyttyä</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Miten voin liittyä käännöstiimiin?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Täytä yhteydenottolomake ja valitse aiheeksi "Liity käännöstiimiin". Kerro meille kielitaidoistasi (japani/suomi) ja kiinnostuksestasi. Palaamme asiaan mahdollisimman pian!
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Saako sivuillenne lähettää omaa fanartia?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Kyllä! Otamme mielellämme vastaan fanartia. Lähetä teos galleriaan yhteydenottolomakkeen kautta. Käymme kaikki lähetykset läpi ja julkaisemme ne galleriaosastolla.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Milloin uusia lukuja julkaistaan?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Julkaisurytmi vaihtelee sarjasta riippuen. Tilaa uutiskirjeemme tai seuraa meitä sosiaalisessa mediassa saadaksesi ilmoituksen heti kun uusi luku on saatavilla.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Saako käännöksiänne jakaa muualle?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Käännöksemme on tarkoitettu luettavaksi tällä sivustolla. Yksittäisten sivujen jakaminen ei-kaupallisessa tarkoituksessa on sallittua, kun mainitsette lähteen. Ota yhteyttä laajemmasta uudelleenjulkaisemisesta.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
+  <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
+  <p style="margin-top:0.4rem;"><a href="translation.html">Käännökset</a> · <a href="blog.html">Blogi</a></p>
+</footer>
+
+<script>
+  function submitForm() {
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('successMsg').classList.add('show');
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blogi – Pohjoinen Manga</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* Featured post */
+    .post-featured {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(13,43,62,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .post-featured-thumb {
+      height: 280px;
+      background: linear-gradient(135deg, var(--sky-deep) 0%, var(--midnight) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      position: relative;
+    }
+
+    .post-featured-thumb::after {
+      content: 'FEATURED';
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: var(--sky);
+      color: var(--midnight);
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    .post-featured-body {
+      padding: 2rem;
+    }
+
+    .post-date {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--sky-deep);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--midnight);
+      margin: 0.5rem 0 0.75rem;
+      line-height: 1.25;
+    }
+
+    .post-title a { color: inherit; text-decoration: none; }
+    .post-title a:hover { color: var(--sky-deep); }
+
+    .post-excerpt {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .post-author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--sky);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Post list */
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .post-item {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      gap: 0;
+      box-shadow: 0 2px 12px rgba(13,43,62,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .post-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(13,43,62,0.12);
+    }
+
+    .post-item-thumb {
+      width: 100px;
+      min-height: 100px;
+      background: var(--midnight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .pi-blue  { background: linear-gradient(135deg, var(--sky-deep), var(--midnight)); }
+    .pi-pine  { background: linear-gradient(135deg, var(--pine), #1a3a2e); }
+    .pi-gold  { background: linear-gradient(135deg, #7b5200, var(--midnight)); }
+    .pi-berry { background: linear-gradient(135deg, #7a1a14, var(--midnight)); }
+
+    .post-item-body {
+      padding: 1rem 1.25rem;
+      flex: 1;
+    }
+
+    .post-item-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--midnight);
+      margin: 0.3rem 0 0.4rem;
+      line-height: 1.3;
+    }
+
+    .post-item-title a { color: inherit; text-decoration: none; }
+    .post-item-title a:hover { color: var(--sky-deep); }
+
+    .post-item-excerpt {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* Sidebar */
+    .sidebar-widget {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(13,43,62,0.07);
+      margin-bottom: 1.5rem;
+    }
+
+    .widget-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--midnight);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--sky-pale);
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag-cloud a {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      background: var(--sky-pale);
+      color: var(--sky-deep);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .tag-cloud a:hover { background: var(--sky); color: var(--midnight); }
+
+    .archive-list {
+      list-style: none;
+    }
+
+    .archive-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--sky-pale);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+    }
+
+    .archive-list li:last-child { border-bottom: none; }
+
+    .archive-list a { color: var(--text); text-decoration: none; }
+    .archive-list a:hover { color: var(--sky-deep); }
+
+    .archive-count {
+      background: var(--sky-pale);
+      color: var(--sky-deep);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.1rem 0.5rem;
+      border-radius: 10px;
+    }
+
+    .newsletter-widget {
+      background: var(--midnight);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .newsletter-widget h4 {
+      font-family: 'Playfair Display', serif;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .newsletter-widget p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-input {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      outline: none;
+    }
+
+    .newsletter-input:focus { box-shadow: 0 0 0 3px rgba(91,200,226,0.4); }
+
+    @media (max-width: 850px) {
+      .blog-grid { grid-template-columns: 1fr; }
+      .post-item-thumb { width: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">Pohjoinen <span>Manga</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Etusivu</a></li>
+      <li><a href="translation.html">Käännökset</a></li>
+      <li><a href="blog.html" class="active">Blogi</a></li>
+      <li><a href="gallery.html">Galleria</a></li>
+      <li><a href="contact.html">Yhteystiedot</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1><span>Blogi</span></h1>
+  <p>Ajatuksia mangasta, käännöstyöstä ja pohjoisen hiljaisuudesta</p>
+</div>
+
+<div class="mm-divider">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<div class="main-content">
+  <div class="blog-grid">
+
+    <!-- LEFT: Posts -->
+    <div>
+      <!-- Featured -->
+      <div class="post-featured fade-up">
+        <div class="post-featured-thumb">📚</div>
+        <div class="post-featured-body">
+          <div class="post-date">3. toukokuuta 2026</div>
+          <h2 class="post-title"><a href="#">Käännöstyön haasteet: Kun japanilaiset sanonnat eivät käänny suomeksi</a></h2>
+          <p class="post-excerpt">Manga kääntäminen on haastava taidemuoto. Japanin kielessä on lukuisia kulttuurisidonnaisia ilmauksia, joille ei löydy suoraa suomenkielistä vastinetta. Tässä kirjoituksessa käymme läpi yleisimpiä haasteita ja ratkaisujamme...</p>
+          <div class="post-meta">
+            <div class="post-author-avatar">🦊</div>
+            <div>
+              <strong style="color:var(--midnight);">Mikaela H.</strong> · Pääkääntäjä<br>
+              <span>8 min lukuaika · 42 kommenttia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post list -->
+      <h2 class="section-title" style="margin-bottom:1.5rem;">Viimeisimmät kirjoitukset</h2>
+      <div class="post-list">
+
+        <div class="post-item fade-up fade-up-1">
+          <div class="post-item-thumb pi-blue">🌊</div>
+          <div class="post-item-body">
+            <div class="post-date">28. huhtikuuta 2026</div>
+            <div class="post-item-title"><a href="#">Jäämeren Tytär: Ensimmäisen vuoden retrospektiivi</a></div>
+            <div class="post-item-excerpt">Vuosi sitten julkaisimme ensimmäisen luvun. Mitä olemme oppineet?</div>
+            <div class="post-meta" style="margin-top:0.5rem;">
+              <span class="badge">Projektiuutiset</span>
+              <span style="font-size:0.75rem;color:var(--text-light);">5 min</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-item fade-up fade-up-2">
+          <div class="post-item-thumb pi-pine">🌲</div>
+          <div class="post-item-body">
+            <div class="post-date">15. huhtikuuta 2026</div>
+            <div class="post-item-title"><a href="#">Miksi suomalainen manga on ainutlaatuista</a></div>
+            <div class="post-item-excerpt">Pohjoisen luonto, melankolinen tunnelma ja hiljaisuus — näin suomalaisuus näkyy mangassamme.</div>
+            <div class="post-meta" style="margin-top:0.5rem;">
+              <span class="badge pine">Artikkeli</span>
+              <span style="font-size:0.75rem;color:var(--text-light);">7 min</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-item fade-up fade-up-3">
+          <div class="post-item-thumb pi-gold">✨</div>
+          <div class="post-item-body">
+            <div class="post-date">2. huhtikuuta 2026</div>
+            <div class="post-item-title"><a href="#">Suosittelemat mangat kevääksi 2026</a></div>
+            <div class="post-item-excerpt">10 mangaa, joita olemme rakastaneet tänä keväänä. Jotain jokaiselle.</div>
+            <div class="post-meta" style="margin-top:0.5rem;">
+              <span class="badge gold">Suositukset</span>
+              <span style="font-size:0.75rem;color:var(--text-light);">4 min</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-item fade-up fade-up-4">
+          <div class="post-item-thumb pi-berry">🦌</div>
+          <div class="post-item-body">
+            <div class="post-date">20. maaliskuuta 2026</div>
+            <div class="post-item-title"><a href="#">Haastattelu: Piirtäjä Sanna K. kertoo prosessistaan</a></div>
+            <div class="post-item-excerpt">Juttelimme Revontulien Alla -sarjan piirtäjän kanssa luovasta prosessista ja inspiraation lähteistä.</div>
+            <div class="post-meta" style="margin-top:0.5rem;">
+              <span class="badge">Haastattelu</span>
+              <span style="font-size:0.75rem;color:var(--text-light);">10 min</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div>
+      <!-- Newsletter -->
+      <div class="newsletter-widget fade-up">
+        <div style="font-size:2rem;margin-bottom:0.75rem;">📬</div>
+        <h4>Tilaa uutiskirje</h4>
+        <p>Saa uudet kirjoitukset suoraan sähköpostiisi</p>
+        <input class="newsletter-input" type="email" placeholder="sinun@email.fi" />
+        <button class="btn btn-primary" style="width:100%;">Tilaa →</button>
+      </div>
+
+      <!-- Tags -->
+      <div class="sidebar-widget fade-up" style="margin-top:1.5rem;">
+        <div class="widget-title">Aiheet</div>
+        <div class="tag-cloud">
+          <a href="#">Käännöstyö</a>
+          <a href="#">Manga</a>
+          <a href="#">Suomi</a>
+          <a href="#">Artikkeli</a>
+          <a href="#">Projektiuutiset</a>
+          <a href="#">Haastattelu</a>
+          <a href="#">Suositukset</a>
+          <a href="#">Fantasia</a>
+          <a href="#">Kulttuuri</a>
+          <a href="#">Japani</a>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="sidebar-widget fade-up">
+        <div class="widget-title">Arkisto</div>
+        <ul class="archive-list">
+          <li><a href="#">Toukokuu 2026</a><span class="archive-count">3</span></li>
+          <li><a href="#">Huhtikuu 2026</a><span class="archive-count">5</span></li>
+          <li><a href="#">Maaliskuu 2026</a><span class="archive-count">4</span></li>
+          <li><a href="#">Helmikuu 2026</a><span class="archive-count">3</span></li>
+          <li><a href="#">Tammikuu 2026</a><span class="archive-count">6</span></li>
+          <li><a href="#">Vuosi 2025</a><span class="archive-count">28</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
+  <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
+  <p style="margin-top:0.4rem;"><a href="contact.html">Ota yhteyttä</a> · <a href="translation.html">Käännökset</a></p>
+</footer>
+
+</body>
+</html>

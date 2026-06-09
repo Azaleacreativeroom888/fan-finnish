@@ -4,260 +4,189 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blogi – Pohjoinen Manga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    .blog-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 2.5rem;
-      align-items: start;
+
+    /* ── STRIPE BAR ── */
+    .stripe-bar {
+      height: 14px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--sky)       0px,  var(--sky)       28px,
+        var(--midnight)  28px, var(--midnight)   56px,
+        var(--sky-light) 56px, var(--sky-light)  84px,
+        var(--sky-deep)  84px, var(--sky-deep)  112px
+      );
     }
 
-    /* Featured post */
-    .post-featured {
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(13,43,62,0.1);
-      margin-bottom: 2rem;
-    }
-
-    .post-featured-thumb {
-      height: 280px;
-      background: linear-gradient(135deg, var(--sky-deep) 0%, var(--midnight) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 6rem;
-      position: relative;
-    }
-
-    .post-featured-thumb::after {
-      content: 'FEATURED';
-      position: absolute;
-      top: 1.25rem;
-      left: 1.25rem;
-      background: var(--sky);
-      color: var(--midnight);
-      font-size: 0.65rem;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-    }
-
-    .post-featured-body {
-      padding: 2rem;
-    }
-
-    .post-date {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--sky-deep);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .post-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--midnight);
-      margin: 0.5rem 0 0.75rem;
-      line-height: 1.25;
-    }
-
-    .post-title a { color: inherit; text-decoration: none; }
-    .post-title a:hover { color: var(--sky-deep); }
-
-    .post-excerpt {
-      font-size: 0.9rem;
-      color: var(--text);
-      line-height: 1.7;
-      margin-bottom: 1.25rem;
-    }
-
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.8rem;
-      color: var(--text-light);
-    }
-
-    .post-author-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--sky);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-
-    /* Post list */
-    .post-list {
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 760px;
+      margin: 44px auto 72px;
+      padding: 0 20px;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 20px;
     }
 
-    .post-item {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
+    /* ── FILTER BAR ── */
+    .filter-wrap {
+      max-width: 760px;
+      margin: 32px auto 0;
+      padding: 0 20px;
       display: flex;
-      gap: 0;
-      box-shadow: 0 2px 12px rgba(13,43,62,0.07);
-      transition: transform 0.2s, box-shadow 0.2s;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
-    .post-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(13,43,62,0.12);
+    .filter-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
     }
 
-    .post-item-thumb {
-      width: 100px;
-      min-height: 100px;
-      background: var(--midnight);
+    .filter-btn {
+      padding: 6px 16px;
+      background: #fff;
+      border: 2.5px solid var(--midnight);
+      border-radius: 30px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      color: var(--midnight);
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--midnight);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--sky);
+      border-color: var(--sky-deep);
+      box-shadow: 2px 2px 0 var(--sky-deep);
+      color: var(--midnight);
+    }
+
+    /* ── ENTRY CARD ── */
+    .entry-card {
+      background: #fff;
+      border: 3px solid var(--midnight);
+      border-radius: 12px;
+      box-shadow: 5px 5px 0 var(--midnight);
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .entry-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--midnight);
+    }
+
+    .entry-card:nth-child(1)  { animation-delay: 0.04s; }
+    .entry-card:nth-child(2)  { animation-delay: 0.08s; }
+    .entry-card:nth-child(3)  { animation-delay: 0.12s; }
+    .entry-card:nth-child(4)  { animation-delay: 0.16s; }
+    .entry-card:nth-child(5)  { animation-delay: 0.20s; }
+    .entry-card:nth-child(6)  { animation-delay: 0.24s; }
+    .entry-card:nth-child(7)  { animation-delay: 0.28s; }
+    .entry-card:nth-child(8)  { animation-delay: 0.32s; }
+    .entry-card:nth-child(9)  { animation-delay: 0.36s; }
+
+    /* カードヘッダー（日付＋タグ） */
+    .entry-header {
+      background: var(--sky);
+      border-bottom: 3px solid var(--midnight);
+      padding: 10px 18px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      flex-shrink: 0;
+      gap: 10px;
     }
 
-    .pi-blue  { background: linear-gradient(135deg, var(--sky-deep), var(--midnight)); }
-    .pi-pine  { background: linear-gradient(135deg, var(--pine), #1a3a2e); }
-    .pi-gold  { background: linear-gradient(135deg, #7b5200, var(--midnight)); }
-    .pi-berry { background: linear-gradient(135deg, #7a1a14, var(--midnight)); }
-
-    .post-item-body {
-      padding: 1rem 1.25rem;
-      flex: 1;
-    }
-
-    .post-item-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--midnight);
-      margin: 0.3rem 0 0.4rem;
-      line-height: 1.3;
-    }
-
-    .post-item-title a { color: inherit; text-decoration: none; }
-    .post-item-title a:hover { color: var(--sky-deep); }
-
-    .post-item-excerpt {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      line-height: 1.5;
-    }
-
-    /* Sidebar */
-    .sidebar-widget {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(13,43,62,0.07);
-      margin-bottom: 1.5rem;
-    }
-
-    .widget-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--midnight);
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--sky-pale);
-    }
-
-    .tag-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .tag-cloud a {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      background: var(--sky-pale);
-      color: var(--sky-deep);
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .tag-cloud a:hover { background: var(--sky); color: var(--midnight); }
-
-    .archive-list {
-      list-style: none;
-    }
-
-    .archive-list li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--sky-pale);
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.875rem;
-    }
-
-    .archive-list li:last-child { border-bottom: none; }
-
-    .archive-list a { color: var(--text); text-decoration: none; }
-    .archive-list a:hover { color: var(--sky-deep); }
-
-    .archive-count {
-      background: var(--sky-pale);
-      color: var(--sky-deep);
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.1rem 0.5rem;
-      border-radius: 10px;
-    }
-
-    .newsletter-widget {
-      background: var(--midnight);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-    }
-
-    .newsletter-widget h4 {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-
-    .newsletter-widget p {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 1rem;
-    }
-
-    .newsletter-input {
-      width: 100%;
-      padding: 0.65rem 1rem;
-      border-radius: 6px;
-      border: none;
+    .entry-date {
       font-family: 'Nunito', sans-serif;
-      font-size: 0.875rem;
-      margin-bottom: 0.5rem;
-      outline: none;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: var(--midnight);
     }
 
-    .newsletter-input:focus { box-shadow: 0 0 0 3px rgba(91,200,226,0.4); }
+    .entry-tag {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--midnight);
+      color: var(--sky-light);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-family: 'Nunito', sans-serif;
+      white-space: nowrap;
+    }
 
-    @media (max-width: 850px) {
-      .blog-grid { grid-template-columns: 1fr; }
-      .post-item-thumb { width: 80px; }
+    .entry-tag.green { background: var(--pine); color: #fff; }
+    .entry-tag.gold  { background: #7b5200; color: #ffe9a0; }
+
+    /* 本文 */
+    .entry-body {
+      padding: 16px 20px 18px;
+    }
+
+    .entry-body p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .entry-body p + p {
+      margin-top: 0.75em;
+    }
+
+    .entry-body strong {
+      color: var(--sky-deep);
+      font-weight: 800;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 4px 0;
+    }
+
+    .section-divider span {
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sky-deep) 0, var(--sky-deep) 5px,
+        transparent 5px, transparent 11px
+      );
+      opacity: 0.35;
+    }
+
+    @media (max-width: 580px) {
+      .container { padding: 0 12px; }
+      .entry-body p { font-size: 14px; }
     }
   </style>
 </head>
@@ -276,147 +205,149 @@
   </div>
 </nav>
 
+<div class="stripe-bar"></div>
+
 <div class="page-hero">
-  <h1><span>Blogi</span></h1>
-  <p>Ajatuksia mangasta, käännöstyöstä ja pohjoisen hiljaisuudesta</p>
+  <h1>✍️ <span>Blogi</span></h1>
+  <p>日々の翻訳・創作・観察メモ</p>
 </div>
 
-<div class="mm-divider">
-  <span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span>
+<div class="stripe-bar"></div>
+
+<!-- FILTER -->
+<div class="filter-wrap">
+  <span class="filter-label">カテゴリ ▸</span>
+  <button class="filter-btn active" onclick="filterCards(this,'all')">すべて</button>
+  <button class="filter-btn" onclick="filterCards(this,'Culture')">Culture</button>
+  <button class="filter-btn" onclick="filterCards(this,'Manga')">Manga</button>
+  <button class="filter-btn" onclick="filterCards(this,'Translation')">Translation</button>
+  <button class="filter-btn" onclick="filterCards(this,'Movie')">Movie</button>
+  <button class="filter-btn" onclick="filterCards(this,'Nuance')">Nuance</button>
+  <button class="filter-btn" onclick="filterCards(this,'Vocabulary')">Vocabulary</button>
 </div>
 
-<div class="main-content">
-  <div class="blog-grid">
+<div class="container">
 
-    <!-- LEFT: Posts -->
-    <div>
-      <!-- Featured -->
-      <div class="post-featured fade-up">
-        <div class="post-featured-thumb">📚</div>
-        <div class="post-featured-body">
-          <div class="post-date">3. toukokuuta 2026</div>
-          <h2 class="post-title"><a href="#">Käännöstyön haasteet: Kun japanilaiset sanonnat eivät käänny suomeksi</a></h2>
-          <p class="post-excerpt">Manga kääntäminen on haastava taidemuoto. Japanin kielessä on lukuisia kulttuurisidonnaisia ilmauksia, joille ei löydy suoraa suomenkielistä vastinetta. Tässä kirjoituksessa käymme läpi yleisimpiä haasteita ja ratkaisujamme...</p>
-          <div class="post-meta">
-            <div class="post-author-avatar">🦊</div>
-            <div>
-              <strong style="color:var(--midnight);">Mikaela H.</strong> · Pääkääntäjä<br>
-              <span>8 min lukuaika · 42 kommenttia</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Post list -->
-      <h2 class="section-title" style="margin-bottom:1.5rem;">Viimeisimmät kirjoitukset</h2>
-      <div class="post-list">
-
-        <div class="post-item fade-up fade-up-1">
-          <div class="post-item-thumb pi-blue">🌊</div>
-          <div class="post-item-body">
-            <div class="post-date">28. huhtikuuta 2026</div>
-            <div class="post-item-title"><a href="#">Jäämeren Tytär: Ensimmäisen vuoden retrospektiivi</a></div>
-            <div class="post-item-excerpt">Vuosi sitten julkaisimme ensimmäisen luvun. Mitä olemme oppineet?</div>
-            <div class="post-meta" style="margin-top:0.5rem;">
-              <span class="badge">Projektiuutiset</span>
-              <span style="font-size:0.75rem;color:var(--text-light);">5 min</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post-item fade-up fade-up-2">
-          <div class="post-item-thumb pi-pine">🌲</div>
-          <div class="post-item-body">
-            <div class="post-date">15. huhtikuuta 2026</div>
-            <div class="post-item-title"><a href="#">Miksi suomalainen manga on ainutlaatuista</a></div>
-            <div class="post-item-excerpt">Pohjoisen luonto, melankolinen tunnelma ja hiljaisuus — näin suomalaisuus näkyy mangassamme.</div>
-            <div class="post-meta" style="margin-top:0.5rem;">
-              <span class="badge pine">Artikkeli</span>
-              <span style="font-size:0.75rem;color:var(--text-light);">7 min</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post-item fade-up fade-up-3">
-          <div class="post-item-thumb pi-gold">✨</div>
-          <div class="post-item-body">
-            <div class="post-date">2. huhtikuuta 2026</div>
-            <div class="post-item-title"><a href="#">Suosittelemat mangat kevääksi 2026</a></div>
-            <div class="post-item-excerpt">10 mangaa, joita olemme rakastaneet tänä keväänä. Jotain jokaiselle.</div>
-            <div class="post-meta" style="margin-top:0.5rem;">
-              <span class="badge gold">Suositukset</span>
-              <span style="font-size:0.75rem;color:var(--text-light);">4 min</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post-item fade-up fade-up-4">
-          <div class="post-item-thumb pi-berry">🦌</div>
-          <div class="post-item-body">
-            <div class="post-date">20. maaliskuuta 2026</div>
-            <div class="post-item-title"><a href="#">Haastattelu: Piirtäjä Sanna K. kertoo prosessistaan</a></div>
-            <div class="post-item-excerpt">Juttelimme Revontulien Alla -sarjan piirtäjän kanssa luovasta prosessista ja inspiraation lähteistä.</div>
-            <div class="post-meta" style="margin-top:0.5rem;">
-              <span class="badge">Haastattelu</span>
-              <span style="font-size:0.75rem;color:var(--text-light);">10 min</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
+  <div class="entry-card" data-tag="Culture">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 06 · 01</span>
+      <span class="entry-tag">Culture</span>
     </div>
-
-    <!-- RIGHT: Sidebar -->
-    <div>
-      <!-- Newsletter -->
-      <div class="newsletter-widget fade-up">
-        <div style="font-size:2rem;margin-bottom:0.75rem;">📬</div>
-        <h4>Tilaa uutiskirje</h4>
-        <p>Saa uudet kirjoitukset suoraan sähköpostiisi</p>
-        <input class="newsletter-input" type="email" placeholder="sinun@email.fi" />
-        <button class="btn btn-primary" style="width:100%;">Tilaa →</button>
-      </div>
-
-      <!-- Tags -->
-      <div class="sidebar-widget fade-up" style="margin-top:1.5rem;">
-        <div class="widget-title">Aiheet</div>
-        <div class="tag-cloud">
-          <a href="#">Käännöstyö</a>
-          <a href="#">Manga</a>
-          <a href="#">Suomi</a>
-          <a href="#">Artikkeli</a>
-          <a href="#">Projektiuutiset</a>
-          <a href="#">Haastattelu</a>
-          <a href="#">Suositukset</a>
-          <a href="#">Fantasia</a>
-          <a href="#">Kulttuuri</a>
-          <a href="#">Japani</a>
-        </div>
-      </div>
-
-      <!-- Archive -->
-      <div class="sidebar-widget fade-up">
-        <div class="widget-title">Arkisto</div>
-        <ul class="archive-list">
-          <li><a href="#">Toukokuu 2026</a><span class="archive-count">3</span></li>
-          <li><a href="#">Huhtikuu 2026</a><span class="archive-count">5</span></li>
-          <li><a href="#">Maaliskuu 2026</a><span class="archive-count">4</span></li>
-          <li><a href="#">Helmikuu 2026</a><span class="archive-count">3</span></li>
-          <li><a href="#">Tammikuu 2026</a><span class="archive-count">6</span></li>
-          <li><a href="#">Vuosi 2025</a><span class="archive-count">28</span></li>
-        </ul>
-      </div>
+    <div class="entry-body">
+      <p>When I first watched The Bachelor in the US, I was surprised that the participants kissed and acted affectionate in front of the camera.
+        But after I got used to it, Japanese reality show participants seemed a bit boring.
+        Japanese participants behave more politely in front of the camera.
+        I want more chaos.</p>
     </div>
-
   </div>
+
+  <div class="entry-card" data-tag="Manga">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 05 · 18</span>
+      <span class="entry-tag green">Manga</span>
+    </div>
+    <div class="entry-body">
+      <p>I'm translating a newspaper column right now.
+        It's pretty challenging, and since I'm better at translating dialogue, columns take me much longer.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Manga">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 05 · 15</span>
+      <span class="entry-tag green">Manga</span>
+    </div>
+    <div class="entry-body">
+      <p>I'm showing my manga to my family to see what they think. Also to the editor.
+        I'm not just messing around—I'm serious about becoming a mangaka.
+        I know becoming a mangaka is hard, but I keep trying.</p>
+      <p>I'm working on a 4-page manga now. After that, I'll move on to an 8-page manga.
+        Right now, I'm doing the pen inking for the 4-page manga, and at the same time I'm working on the story for the 8-page manga.
+        I haven't come up with a story for the 8-page manga yet.</p>
+      <p>My brain gets really tired from studying English to Japanese translation and working on manga at the same time.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Translation">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 05 · 14</span>
+      <span class="entry-tag">Translation</span>
+    </div>
+    <div class="entry-body">
+      <p>I'm learning how to translate, and when I looked at the student next to me, I noticed her paper that there were no corrections at all. I thought that was amazing, and it made me want to work harder too.</p>
+      <p>My teacher seems to see right through everything—I honestly don't know how, but she can tell exactly what I'm struggling with, almost like she knows everything. But then I realized it's just because everyone is making the same mistakes.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Movie">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 05 · 10</span>
+      <span class="entry-tag gold">Movie</span>
+    </div>
+    <div class="entry-body">
+      <p>I watched Dumbo from Disney. I didn't know the Disney character Dumbo's name came from 'dumb' and 'jumbo'. It was a cute movie.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Translation">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 04 · 22</span>
+      <span class="entry-tag">Translation</span>
+    </div>
+    <div class="entry-body">
+      <p>The dialogue sections came back with barely any corrections — which honestly felt great. It's making me think manga translation might genuinely be something I want to pursue.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Translation">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 04 · 22</span>
+      <span class="entry-tag">Translation</span>
+    </div>
+    <div class="entry-body">
+      <p>Turns out if you translate a gag with too much energy, it gets rejected. So what's the "safe zone" for comedy? I'm not sure there is one — but I want to slowly get better at landing the joke without losing the punch.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Nuance">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 04 · 21</span>
+      <span class="entry-tag green">Nuance</span>
+    </div>
+    <div class="entry-body">
+      <p>Personally, I feel like <strong>「あんたなんか人間じゃない」</strong> is best captured as <strong>"You are a monster."</strong> — it carries the same emotional weight without being too literal.</p>
+    </div>
+  </div>
+
+  <div class="entry-card" data-tag="Vocabulary">
+    <div class="entry-header">
+      <span class="entry-date">2026 · 04 · 20</span>
+      <span class="entry-tag gold">Vocabulary</span>
+    </div>
+    <div class="entry-body">
+      <p>Still wrestling with how to translate <strong>"indeed"</strong> and <strong>"How iconic"</strong> naturally. For now, the plan is to just do a lot of practice translations and focus on speed without dropping quality — improvement comes with reps.</p>
+    </div>
+  </div>
+
 </div>
+
+<div class="stripe-bar"></div>
 
 <footer>
   <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
   <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
-  <p style="margin-top:0.4rem;"><a href="contact.html">Ota yhteyttä</a> · <a href="translation.html">Käännökset</a></p>
+  <p style="margin-top:0.4rem;"><a href="index.html">Etusivu</a> · <a href="contact.html">Yhteystiedot</a></p>
 </footer>
+
+<script>
+  function filterCards(btn, tag) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.entry-card[data-tag]').forEach(card => {
+      card.style.display = (tag === 'all' || card.dataset.tag === tag) ? '' : 'none';
+    });
+  }
+</script>
 
 </body>
 </html>

@@ -4,195 +4,212 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Käännösloki – Pohjoinen Manga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    .filter-bar {
+
+    /* ── STRIPE BAR ── */
+    .stripe-bar {
+      height: 14px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--sky)       0px,  var(--sky)       28px,
+        var(--midnight)  28px, var(--midnight)   56px,
+        var(--sky-light) 56px, var(--sky-light)  84px,
+        var(--sky-deep)  84px, var(--sky-deep)  112px
+      );
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 780px;
+      margin: 48px auto 80px;
+      padding: 0 20px;
       display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ── ENTRY CARD ── */
+    .entry-card {
+      background: #fff;
+      border: 3px solid var(--midnight);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--midnight);
+      overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.18s;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .entry-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 8px 8px 0 var(--midnight);
+    }
+
+    .entry-card:nth-child(2) { animation-delay: 0.05s; }
+    .entry-card:nth-child(3) { animation-delay: 0.10s; }
+    .entry-card:nth-child(4) { animation-delay: 0.15s; }
+    .entry-card:nth-child(5) { animation-delay: 0.20s; }
+    .entry-card:nth-child(6) { animation-delay: 0.25s; }
+    .entry-card:nth-child(7) { animation-delay: 0.30s; }
+    .entry-card:nth-child(8) { animation-delay: 0.35s; }
+    .entry-card:nth-child(9) { animation-delay: 0.40s; }
+
+    /* カードタイトルバー */
+    .entry-header {
+      background: var(--sky);
+      border-bottom: 3px solid var(--midnight);
+      padding: 13px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .entry-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--midnight);
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .entry-tag {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--midnight);
+      color: var(--sky-light);
+      padding: 4px 11px;
+      border-radius: 5px;
+      white-space: nowrap;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .entry-tag.green { background: var(--pine); color: #fff; }
+    .entry-tag.gold  { background: #7b5200; color: #ffe9a0; }
+
+    /* セクション */
+    .entry-body { padding: 0; }
+
+    .section {
+      padding: 15px 20px;
+      border-bottom: 2px dashed rgba(13,43,62,0.12);
+    }
+
+    .section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: var(--sky-deep);
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .section p {
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    .section p strong { color: var(--sky-deep); font-weight: 800; }
+
+    /* 原文ブロック */
+    .section p.original {
+      font-style: italic;
+      color: #1e3d50;
+      background: var(--sky-pale);
+      border-left: 4px solid var(--sky);
+      padding: 8px 14px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 4px;
+    }
+
+    .arrow {
+      text-align: center;
+      font-size: 1.3rem;
+      color: var(--sky-deep);
+      margin: 6px 0;
+      opacity: 0.6;
+    }
+
+    /* 判断メモ */
+    .section.memo { background: #f0fafd; }
+    .section.memo .section-label { color: #1a6a84; }
+    .section.memo p { font-size: 13.5px; color: #1c3d50; line-height: 1.75; }
+
+    /* ── FILTER BAR ── */
+    .filter-wrap {
+      max-width: 780px;
+      margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex;
+      gap: 8px;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 2rem 0 1.5rem;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
     }
 
     .filter-btn {
-      padding: 0.45rem 1rem;
-      border-radius: 20px;
-      border: 2px solid var(--sky);
-      background: transparent;
-      color: var(--sky-deep);
+      padding: 6px 16px;
+      background: #fff;
+      border: 2.5px solid var(--midnight);
+      border-radius: 30px;
       font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 0.8rem;
+      font-weight: 900;
+      font-size: 12px;
+      color: var(--midnight);
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      box-shadow: 2px 2px 0 var(--midnight);
+      transition: background 0.15s, color 0.15s;
     }
 
     .filter-btn:hover,
     .filter-btn.active {
       background: var(--sky);
-      color: var(--midnight);
+      border-color: var(--sky-deep);
+      box-shadow: 2px 2px 0 var(--sky-deep);
     }
 
-    /* Table */
-    .log-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 16px rgba(13,43,62,0.08);
-    }
-
-    .log-table thead {
+    /* ── INFO BANNER ── */
+    .info-banner {
       background: var(--midnight);
-      color: rgba(255,255,255,0.85);
-    }
-
-    .log-table thead th {
-      padding: 1rem 1.25rem;
-      text-align: left;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .log-table tbody tr {
-      border-bottom: 1px solid var(--sky-pale);
-      transition: background 0.15s;
-    }
-
-    .log-table tbody tr:last-child { border-bottom: none; }
-    .log-table tbody tr:hover { background: var(--sky-pale); }
-
-    .log-table td {
-      padding: 1rem 1.25rem;
-      font-size: 0.875rem;
-      vertical-align: middle;
-    }
-
-    .series-name {
-      font-weight: 700;
-      color: var(--midnight);
-    }
-
-    .series-sub {
-      font-size: 0.75rem;
-      color: var(--text-light);
-      margin-top: 0.15rem;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 0.2rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-
-    .status-done { background: rgba(45,106,79,0.12); color: var(--pine); }
-    .status-wip  { background: rgba(91,200,226,0.2); color: var(--sky-deep); }
-    .status-new  { background: rgba(232,168,56,0.2); color: #8a5a00; }
-
-    /* Progress bar */
-    .progress-wrap {
+      border: 3px solid var(--sky-deep);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--sky-deep);
+      padding: 22px 26px;
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .progress-bar-bg {
-      flex: 1;
-      height: 6px;
-      background: var(--sky-pale);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--sky);
-      border-radius: 3px;
-      transition: width 0.6s ease;
-    }
-
-    .progress-pct {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--sky-deep);
-      min-width: 35px;
-      text-align: right;
-    }
-
-    /* Team cards */
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
-
-    .team-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-      box-shadow: 0 2px 12px rgba(13,43,62,0.07);
-      border-top: 4px solid var(--sky);
-    }
-
-    .team-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--midnight);
-      color: var(--sky);
-      font-size: 1.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 0.75rem;
-    }
-
-    .team-name {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--midnight);
-    }
-
-    .team-role {
-      font-size: 0.75rem;
-      color: var(--text-light);
-      margin-top: 0.25rem;
-    }
-
-    .team-count {
-      margin-top: 0.75rem;
-      font-size: 0.8rem;
-      color: var(--sky-deep);
-      font-weight: 700;
-    }
-
-    /* Info box */
-    .info-box {
-      background: var(--sky-pale);
-      border: 2px solid var(--sky-light);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin: 2rem 0;
-      display: flex;
-      gap: 1rem;
+      gap: 16px;
       align-items: flex-start;
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+      line-height: 1.7;
     }
 
-    .info-box-icon { font-size: 2rem; flex-shrink: 0; }
-    .info-box-text h4 { font-family: 'Playfair Display', serif; color: var(--midnight); margin-bottom: 0.4rem; }
-    .info-box-text p { font-size: 0.875rem; color: var(--text); line-height: 1.6; }
+    .info-banner-icon { font-size: 2rem; flex-shrink: 0; }
 
-    @media (max-width: 700px) {
-      .log-table { font-size: 0.8rem; }
-      .log-table td, .log-table th { padding: 0.75rem 0.75rem; }
-      .hide-mobile { display: none; }
+    .info-banner h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--sky-light);
+      font-size: 1.05rem;
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 580px) {
+      .entry-header h2 { font-size: 15px; }
+      .container { padding: 0 12px; }
     }
   </style>
 </head>
@@ -211,190 +228,239 @@
   </div>
 </nav>
 
+<div class="stripe-bar"></div>
+
 <div class="page-hero">
   <h1>Käännös<span>loki</span></h1>
-  <p>Kaikki meneillään olevat ja valmistuneet käännösprojektit</p>
+  <p>翻訳の記録・英語表現メモ・ミニ知識</p>
 </div>
 
-<div class="mm-divider">
-  <span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span>
+<div class="stripe-bar"></div>
+
+<!-- FILTER -->
+<div class="filter-wrap">
+  <span class="filter-label">カテゴリ ▸</span>
+  <button class="filter-btn active" onclick="filterCards(this,'all')">すべて</button>
+  <button class="filter-btn" onclick="filterCards(this,'翻訳')">翻訳</button>
+  <button class="filter-btn" onclick="filterCards(this,'英語表現')">英語表現</button>
+  <button class="filter-btn" onclick="filterCards(this,'英単語')">英単語</button>
+  <button class="filter-btn" onclick="filterCards(this,'ミニ知識')">ミニ知識</button>
 </div>
 
-<div class="main-content">
+<div class="container">
 
-  <div class="info-box fade-up">
-    <div class="info-box-icon">📖</div>
-    <div class="info-box-text">
-      <h4>Tietoa käännöksistämme</h4>
-      <p>Käännämme mangaa japanista suomeksi vapaaehtoisvoimin. Kaikki käännökset ovat fanityötä, emmekä saa niistä taloudellista hyötyä. Jos haluat liittyä tiimiin, ota yhteyttä!</p>
+  <!-- INFO BANNER -->
+  <div class="info-banner">
+    <div class="info-banner-icon">❄️</div>
+    <div>
+      <h4>このページについて</h4>
+      翻訳作業中に気づいたこと、調べた英語表現、ミニ知識などを記録しています。日本語⇄英語の翻訳ノートとして随時更新中です。
     </div>
   </div>
 
-  <!-- Filters -->
-  <div class="filter-bar">
-    <button class="filter-btn active">Kaikki</button>
-    <button class="filter-btn">Käynnissä</button>
-    <button class="filter-btn">Valmis</button>
-    <button class="filter-btn">Uusi projekti</button>
-    <button class="filter-btn">Toiminta</button>
-    <button class="filter-btn">Romantiikka</button>
-    <button class="filter-btn">Fantasia</button>
-  </div>
-
-  <!-- Translation log table -->
-  <h2 class="section-title">Projektit</h2>
-
-  <table class="log-table" style="margin-top:1.5rem;">
-    <thead>
-      <tr>
-        <th>Sarja</th>
-        <th>Genre</th>
-        <th class="hide-mobile">Tiimi</th>
-        <th>Edistyminen</th>
-        <th>Tila</th>
-        <th class="hide-mobile">Päivitetty</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="fade-up">
-        <td>
-          <div class="series-name">Jäämeren Tytär</div>
-          <div class="series-sub">8 / 20 lukua • Alkup. japani</div>
-        </td>
-        <td><span class="badge">Toiminta</span></td>
-        <td class="hide-mobile">Tiimi Revontulet</td>
-        <td>
-          <div class="progress-wrap">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width:40%"></div>
-            </div>
-            <span class="progress-pct">40%</span>
-          </div>
-        </td>
-        <td><span class="status-pill status-wip">Käynnissä</span></td>
-        <td class="hide-mobile">12.5.2026</td>
-      </tr>
-      <tr class="fade-up">
-        <td>
-          <div class="series-name">Metsän Hiljaisuus</div>
-          <div class="series-sub">5 / 5 lukua • Alkup. japani</div>
-        </td>
-        <td><span class="badge pine">Romantiikka</span></td>
-        <td class="hide-mobile">Tiimi Koivu</td>
-        <td>
-          <div class="progress-wrap">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width:100%"></div>
-            </div>
-            <span class="progress-pct">100%</span>
-          </div>
-        </td>
-        <td><span class="status-pill status-done">Valmis</span></td>
-        <td class="hide-mobile">3.3.2025</td>
-      </tr>
-      <tr class="fade-up">
-        <td>
-          <div class="series-name">Revontulien Alla</div>
-          <div class="series-sub">2 / ? lukua • Alkup. japani</div>
-        </td>
-        <td><span class="badge gold">Fantasia</span></td>
-        <td class="hide-mobile">Tiimi Revontulet</td>
-        <td>
-          <div class="progress-wrap">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width:15%"></div>
-            </div>
-            <span class="progress-pct">15%</span>
-          </div>
-        </td>
-        <td><span class="status-pill status-new">Uusi</span></td>
-        <td class="hide-mobile">10.5.2026</td>
-      </tr>
-      <tr class="fade-up">
-        <td>
-          <div class="series-name">Talvisoturit</div>
-          <div class="series-sub">12 / 12 lukua • Alkup. japani</div>
-        </td>
-        <td><span class="badge">Toiminta</span></td>
-        <td class="hide-mobile">Tiimi Lumihiutale</td>
-        <td>
-          <div class="progress-wrap">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width:100%"></div>
-            </div>
-            <span class="progress-pct">100%</span>
-          </div>
-        </td>
-        <td><span class="status-pill status-done">Valmis</span></td>
-        <td class="hide-mobile">14.11.2024</td>
-      </tr>
-      <tr class="fade-up">
-        <td>
-          <div class="series-name">Kaamos</div>
-          <div class="series-sub">3 / 10 lukua • Alkup. japani</div>
-        </td>
-        <td><span class="badge pine">Draama</span></td>
-        <td class="hide-mobile">Tiimi Koivu</td>
-        <td>
-          <div class="progress-wrap">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width:30%"></div>
-            </div>
-            <span class="progress-pct">30%</span>
-          </div>
-        </td>
-        <td><span class="status-pill status-wip">Käynnissä</span></td>
-        <td class="hide-mobile">5.5.2026</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Team section -->
-  <div style="margin-top: 3rem;">
-    <h2 class="section-title">Käännöstiimit</h2>
-    <div class="team-grid">
-      <div class="team-card fade-up fade-up-1">
-        <div class="team-avatar">❄️</div>
-        <div class="team-name">Tiimi Revontulet</div>
-        <div class="team-role">Käännös · Editointi · Lettering</div>
-        <div class="team-count">2 aktiivista projektia</div>
+  <!-- ENTRY 1 -->
+  <div class="entry-card" data-tag="翻訳">
+    <div class="entry-header">
+      <h2>「このセリフどう訳す問題」</h2>
+      <span class="entry-tag">翻訳</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">原文（ムラサキキリンのチャーリーは様子が変 / デイヴィッド・D・レヴァイン）</div>
+        <p class="original">Time. How it passes, from moment to moment. Haven't you ever noticed how some things change when you aren't looking at them?</p>
       </div>
-      <div class="team-card fade-up fade-up-2">
-        <div class="team-avatar">🌲</div>
-        <div class="team-name">Tiimi Koivu</div>
-        <div class="team-role">Käännös · Tarkistus</div>
-        <div class="team-count">2 aktiivista projektia</div>
+      <div class="section">
+        <div class="section-label">翻訳（初稿）</div>
+        <p>時間だ。どうやって時間が刻一刻と過ぎていくのか。見ていない隙になにかが変わったことに気が付いたことはないか？</p>
+        <div class="arrow">⬇ 修正</div>
+        <p>時間だ。時間が瞬間から瞬間へと、どう過ぎていくのか。見ていない隙になにかが変わることに気が付いたことはないか？</p>
       </div>
-      <div class="team-card fade-up fade-up-3">
-        <div class="team-avatar">❄</div>
-        <div class="team-name">Tiimi Lumihiutale</div>
-        <div class="team-role">Käännös · Editointi</div>
-        <div class="team-count">1 valmistunut projekti</div>
+      <div class="section memo">
+        <div class="section-label">📝 判断メモ</div>
+        <p>
+          「moment to moment」は<strong>「瞬間から瞬間へと」</strong>が正しい。<br>
+          この話では"瞬間"とは区切られているもの（漫画の中の世界）なので、刻一刻ではない。<br>
+          changeは過去形ではない。これはケアレスミス。
+        </p>
       </div>
     </div>
   </div>
 
-  <div style="text-align:center; margin-top: 3rem;">
-    <p style="color: var(--text-light); margin-bottom: 1rem;">Haluatko liittyä käännöstiimiin?</p>
-    <a href="contact.html" class="btn btn-dark">Ota yhteyttä →</a>
+  <!-- ENTRY 2 -->
+  <div class="entry-card" data-tag="英語表現">
+    <div class="entry-header">
+      <h2>pseudo-famous</h2>
+      <span class="entry-tag green">英語表現</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">気づきのきっかけ</div>
+        <p>Smartlessというポッドキャストで「pseudo-famous」と言っていて調べてみた。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">意味・解説</div>
+        <p>
+          「疑似的に有名、なんとなく有名」という意味らしい。<br>
+          <strong>「pseudo」</strong>＝ 形容詞：偽の、いかさまの　名詞：いかさま師<br>
+          最近だと、「ネットでしか有名じゃない」などのニュアンスを込めて使われることが多いらしい。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY 3 -->
+  <div class="entry-card" data-tag="英語表現">
+    <div class="entry-header">
+      <h2>Thank you.</h2>
+      <span class="entry-tag green">英語表現</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">観察メモ</div>
+        <p>アメリカ英語では「Thank you.」は皮肉なことがよくある。</p>
+        <p>「教えてくれてありがとう」というふうに言って、「最初っから知ってた。なんで今更言うんだ」という意味を込めてたりする。</p>
+        <p>「Thank you.」は終了シグナルの機能を果たしているように感じる。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">じゃあどう言う？</div>
+        <p>
+          「I will try that.」とか「You have a better idea.」のように、<strong>相手が正しいことを主張する</strong>ほうが多い気がする。<br>
+          英語圏では <strong>acknowledgement（承認）</strong> を示すことが感謝の実質的な代替になっている。<br>
+          ただ、日本人も「ありがとう」と言って、そのアドバイスを無視することはある（笑）
+        </p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 まとめ</div>
+        <p>感謝を伝えることよりも、"相手が正しいことを言葉にする"ことは、アメリカ文化では敬語表現や感謝に近いのではないかと推測する。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY 4 -->
+  <div class="entry-card" data-tag="英単語">
+    <div class="entry-header">
+      <h2>conscience（コンシェンス）</h2>
+      <span class="entry-tag gold">英単語</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">意味</div>
+        <p>良心、道徳心、善悪を判断する心</p>
+      </div>
+      <div class="section">
+        <div class="section-label">例文</div>
+        <p class="original">My conscience wouldn't let me do that.</p>
+        <p style="margin-top:6px;">→ 良心がそれをすることを許さなかった。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY 5 -->
+  <div class="entry-card" data-tag="ミニ知識">
+    <div class="entry-header">
+      <h2>アルファベットは Alpha と Beta！？</h2>
+      <span class="entry-tag">ミニ知識</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">語源トリビア</div>
+        <p>ギリシャ語の最初の2文字が α（alpha）と β（beta）――それをまとめて呼んだのが <strong>alphabet</strong>。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY 6 -->
+  <div class="entry-card" data-tag="ミニ知識">
+    <div class="entry-header">
+      <h2>"actually" は「実は」だけじゃない</h2>
+      <span class="entry-tag">ミニ知識</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">ニュアンス</div>
+        <p>期待と違う事実を軽く修正するニュアンス。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">例文</div>
+        <p class="original">I actually like it.</p>
+        <p style="margin-top:6px;">→ <strong>意外とそれ好き</strong>（思ってたのと違って）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY 7 -->
+  <div class="entry-card" data-tag="翻訳">
+    <div class="entry-header">
+      <h2>「このセリフどう訳す問題」#2</h2>
+      <span class="entry-tag">翻訳</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">原文（ムラサキキリンのチャーリーは様子が変 / デイヴィッド・D・レヴァイン）</div>
+        <p class="original">Solipsistic delusions are frequently merely the initial manifestation of a general insensitivity to legitimacy.</p>
+      </div>
+      <div class="section">
+        <div class="section-label">翻訳（初稿）</div>
+        <p>独我論的妄想は、しばしば単に正当性への全般的な鈍感さの初期症状とみなされています。</p>
+        <div class="arrow">⬇ 修正</div>
+        <p>独我論的妄想は、しばしば他者の人格の正当性やときにはその存在への全般的鈍感さの単なる初期症状とみなされています。</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 判断メモ</div>
+        <p>
+          「solipsistic」は「唯我的」よりも<strong>「独我的」</strong>が正確（自我とその所産だけが実在するという立場）。<br>
+          「唯我的」は単に自己中心的な態度を指すので意味が変わってしまう。<br>
+          「initial manifestation」＝初期症状。<br>
+          「general」の訳に迷い→「全般的な」に落ち着いたが、まだ少し引っかかりがある。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY 8 -->
+  <div class="entry-card" data-tag="翻訳">
+    <div class="entry-header">
+      <h2>「このセリフどう訳す問題」#3</h2>
+      <span class="entry-tag">翻訳</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">原文</div>
+        <p class="original">The protagonist kept drawing, even when no one believed in her story.</p>
+      </div>
+      <div class="section">
+        <div class="section-label">翻訳</div>
+        <p>誰も主人公のストーリーを信じていなかったのに、それでも彼女は描き続けた。</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 判断メモ</div>
+        <p>
+          「believed in」→ 受け身ぽく「信じてもらえない」にしてニュアンスを出す。<br>
+          <strong>「even when」＝「それでも」</strong> がこの文の軸。<br>
+          「〜のに、彼女は〜した」という対比構造を日本語でも活かすのがポイント。
+        </p>
+      </div>
+    </div>
   </div>
 
 </div>
+
+<div class="stripe-bar"></div>
 
 <footer>
   <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
   <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
-  <p style="margin-top:0.4rem;"><a href="contact.html">Ota yhteyttä</a> · <a href="blog.html">Blogi</a></p>
+  <p style="margin-top:0.4rem;"><a href="index.html">Etusivu</a> · <a href="contact.html">Yhteystiedot</a></p>
 </footer>
 
 <script>
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  function filterCards(btn, tag) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.entry-card[data-tag]').forEach(card => {
+      card.style.display = (tag === 'all' || card.dataset.tag === tag) ? '' : 'none';
     });
-  });
+  }
 </script>
 
 </body>

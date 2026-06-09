@@ -4,302 +4,299 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yhteystiedot – Pohjoinen Manga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: 3rem;
-      align-items: start;
+
+    /* ── STRIPE BAR ── */
+    .stripe-bar {
+      height: 14px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--sky)       0px,  var(--sky)       28px,
+        var(--midnight)  28px, var(--midnight)   56px,
+        var(--sky-light) 56px, var(--sky-light)  84px,
+        var(--sky-deep)  84px, var(--sky-deep)  112px
+      );
     }
 
-    /* Contact info side */
-    .contact-info-block {
-      background: var(--midnight);
-      border-radius: 16px;
-      padding: 2.5rem;
-      color: #fff;
+    /* ── MAIN WRAP ── */
+    .main-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 44px 24px 80px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 14px;
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sky) 0px, var(--sky) 8px,
+        transparent 8px, transparent 14px
+      );
+      opacity: 0.5;
+    }
+
+    /* ── LINK GRID ── */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    /* ── LINK CARD ── */
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      background: #fff;
+      border: 3px solid var(--midnight);
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 var(--midnight);
+      padding: 14px 16px;
+      transition: transform 0.15s, box-shadow 0.15s;
       position: relative;
       overflow: hidden;
     }
 
-    .contact-info-block::before {
-      content: '❄';
+    .link-card::before {
+      content: '';
       position: absolute;
-      bottom: -30px;
-      right: -20px;
-      font-size: 10rem;
-      opacity: 0.05;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--sky);
+      border-radius: 7px 0 0 7px;
     }
 
-    .contact-info-block h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--sky-light);
+    .link-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--midnight);
     }
 
-    .contact-info-block > p {
-      color: rgba(255,255,255,0.65);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .contact-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: rgba(91,200,226,0.15);
-      border: 1px solid rgba(91,200,226,0.25);
+    .link-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-    }
-
-    .contact-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sky);
-      margin-bottom: 0.2rem;
-    }
-
-    .contact-value {
-      color: rgba(255,255,255,0.9);
-      font-size: 0.9rem;
-    }
-
-    .contact-value a { color: var(--sky-light); text-decoration: none; }
-    .contact-value a:hover { color: var(--sky); }
-
-    /* Social links */
-    .social-links {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(91,200,226,0.2);
-    }
-
-    .social-btn {
-      padding: 0.5rem 1rem;
+      background: var(--sky-pale);
+      border: 2px solid var(--sky-light);
       border-radius: 8px;
-      background: rgba(91,200,226,0.1);
-      border: 1px solid rgba(91,200,226,0.25);
-      color: var(--sky-light);
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
     }
 
-    .social-btn:hover { background: var(--sky); color: var(--midnight); }
+    .link-text { flex: 1; min-width: 0; }
 
-    /* Form side */
-    .contact-form-wrap {
-      background: #fff;
-      border-radius: 16px;
-      padding: 2.5rem;
-      box-shadow: 0 4px 24px rgba(13,43,62,0.08);
-    }
-
-    .contact-form-wrap h3 {
+    .link-name {
+      display: block;
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
+      font-size: 14px;
+      font-weight: 700;
       color: var(--midnight);
-      margin-bottom: 0.5rem;
+      margin-bottom: 2px;
     }
 
-    .contact-form-wrap > p {
+    .link-desc {
+      display: block;
+      font-size: 11px;
       color: var(--text-light);
-      font-size: 0.875rem;
-      margin-bottom: 1.75rem;
+      line-height: 1.5;
+      font-weight: 700;
     }
 
-    .form-group {
-      margin-bottom: 1.25rem;
+    .link-arrow {
+      font-size: 20px;
+      color: var(--sky-deep);
+      flex-shrink: 0;
+      font-weight: 900;
+      transition: transform 0.2s;
     }
+
+    .link-card:hover .link-arrow { transform: translateX(3px); }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      background: #fff;
+      border: 3px solid var(--midnight);
+      border-radius: 12px;
+      box-shadow: 6px 6px 0 var(--midnight);
+      padding: 32px 34px;
+      margin-top: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: var(--sky);
+    }
+
+    .form-intro {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.85;
+      margin-bottom: 26px;
+      font-weight: 600;
+    }
+
+    .form-group { margin-bottom: 18px; }
 
     .form-label {
       display: block;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--midnight);
-      letter-spacing: 0.05em;
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      color: var(--midnight);
+      margin-bottom: 7px;
     }
 
+    .required { color: var(--sky-deep); }
+
     .form-input,
-    .form-select,
     .form-textarea {
       width: 100%;
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--sky-pale);
-      border-radius: 8px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.9rem;
+      background: var(--sky-pale);
+      border: 2.5px solid var(--sky-light);
+      border-radius: 7px;
       color: var(--text);
-      background: var(--snow);
-      outline: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 14px;
       transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: rgba(26,58,74,0.3);
+      font-weight: 600;
     }
 
     .form-input:focus,
-    .form-select:focus,
     .form-textarea:focus {
       border-color: var(--sky);
-      box-shadow: 0 0 0 3px rgba(91,200,226,0.2);
+      box-shadow: 0 0 0 3px rgba(91,200,226,0.18);
     }
 
-    .form-textarea {
-      min-height: 140px;
-      resize: vertical;
+    .form-textarea { resize: vertical; min-height: 140px; }
+
+    .field-error {
+      display: block;
+      font-size: 11px;
+      color: var(--sky-deep);
+      font-weight: 900;
+      margin-top: 5px;
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .form-check {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .form-check input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--sky);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .form-check label {
-      font-size: 0.825rem;
-      color: var(--text-light);
-      line-height: 1.5;
-    }
-
-    .submit-row {
-      display: flex;
+    .form-submit {
+      display: inline-flex;
       align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .submit-btn {
-      padding: 0.85rem 2rem;
+      gap: 8px;
       background: var(--midnight);
-      color: #fff;
-      border: none;
+      border: 2.5px solid var(--midnight);
       border-radius: 8px;
+      box-shadow: 3px 3px 0 var(--sky-deep);
+      color: #fff;
       font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      padding: 12px 28px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
+      transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+      margin-top: 8px;
     }
 
-    .submit-btn:hover {
+    .form-submit:hover {
       background: var(--sky-deep);
-      transform: translateY(-1px);
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--midnight);
     }
 
-    .submit-note {
-      font-size: 0.78rem;
-      color: var(--text-light);
-    }
+    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    /* Success state */
-    .success-message {
-      display: none;
+    /* Success / Error */
+    .form-success {
+      background: rgba(91,200,226,0.12);
+      border: 2.5px solid var(--sky);
+      border-radius: 8px;
+      padding: 16px 20px;
       text-align: center;
-      padding: 2rem;
-    }
-
-    .success-message.show { display: block; }
-
-    .success-icon { font-size: 4rem; margin-bottom: 1rem; }
-
-    .success-message h4 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      color: var(--midnight);
-      margin-bottom: 0.5rem;
-    }
-
-    /* FAQ section */
-    .faq-list {
-      margin-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .faq-item {
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 1px 8px rgba(13,43,62,0.06);
-    }
-
-    .faq-question {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.25rem;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--midnight);
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
+      color: var(--sky-deep);
       font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
     }
 
-    .faq-toggle {
-      color: var(--sky);
-      font-size: 1.25rem;
-      transition: transform 0.2s;
-      flex-shrink: 0;
+    .form-success-icon { display: block; font-size: 24px; margin-bottom: 6px; }
+
+    .form-error-global {
+      background: #ffeaea;
+      border: 2.5px solid #c0392b;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #c0392b;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
     }
 
-    .faq-item.open .faq-toggle { transform: rotate(45deg); }
-
-    .faq-answer {
-      display: none;
-      padding: 0 1.25rem 1rem;
-      font-size: 0.875rem;
-      color: var(--text);
-      line-height: 1.65;
-      border-top: 1px solid var(--sky-pale);
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--midnight);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      margin-top: 28px;
+      padding: 10px 18px;
+      border: 2.5px solid var(--midnight);
+      border-radius: 8px;
+      box-shadow: 3px 3px 0 var(--midnight);
+      transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+      letter-spacing: 0.04em;
     }
 
-    .faq-item.open .faq-answer { display: block; }
+    .back-link:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--midnight);
+      background: var(--sky-pale);
+    }
 
-    @media (max-width: 850px) {
-      .contact-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
+    @media (max-width: 560px) {
+      .link-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 22px 18px; }
     }
   </style>
 </head>
@@ -318,189 +315,175 @@
   </div>
 </nav>
 
+<div class="stripe-bar"></div>
+
 <div class="page-hero">
-  <h1>Yhteys<span>tiedot</span></h1>
-  <p>Olemme iloisia kuulemaan sinusta!</p>
+  <h1>📮 <span>Links & Contact</span></h1>
+  <p>Find me around the web — or drop a message!</p>
 </div>
 
-<div class="mm-divider">
-  <span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span>
-</div>
+<div class="stripe-bar"></div>
 
-<div class="main-content">
-  <div class="contact-grid">
+<main class="main-wrap">
 
-    <!-- Left: Info -->
-    <div>
-      <div class="contact-info-block fade-up">
-        <h3>Pohjoinen Manga</h3>
-        <p>Teemme mangaa suomeksi rakkauden ja pohjoisen hengen siivittämänä. Ota yhteyttä milloin tahansa!</p>
+  <!-- Manga & Illustration -->
+  <p class="section-label">🎨 Manga & Illustration</p>
+  <div class="link-grid">
 
-        <div class="contact-item">
-          <div class="contact-icon">📧</div>
-          <div>
-            <div class="contact-label">Sähköposti</div>
-            <div class="contact-value"><a href="mailto:hei@pohjoinenmanga.fi">hei@pohjoinenmanga.fi</a></div>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">🌍</div>
-          <div>
-            <div class="contact-label">Sijainti</div>
-            <div class="contact-value">Helsinki, Suomi 🇫🇮</div>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">⏰</div>
-          <div>
-            <div class="contact-label">Vastausaika</div>
-            <div class="contact-value">Yleensä 2–3 arkipäivän kuluessa</div>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">🤝</div>
-          <div>
-            <div class="contact-label">Liity tiimiin</div>
-            <div class="contact-value">Etsimme käännnöstaidoista innokkaita! Täytä lomake.</div>
-          </div>
-        </div>
-
-        <div class="social-links">
-          <a class="social-btn" href="#">🐦 Twitter</a>
-          <a class="social-btn" href="#">📸 Instagram</a>
-          <a class="social-btn" href="#">💬 Discord</a>
-        </div>
+    <a class="link-card" href="https://rookie.shonenjump.com/users/14728546961183734555" target="_blank" rel="noopener">
+      <div class="link-icon">📚</div>
+      <div class="link-text">
+        <span class="link-name">Jump Rookie</span>
+        <span class="link-desc">Original manga posted here</span>
       </div>
-    </div>
+      <span class="link-arrow">›</span>
+    </a>
 
-    <!-- Right: Form -->
-    <div class="contact-form-wrap fade-up fade-up-1">
-      <h3>Lähetä viesti</h3>
-      <p>Kysymyksiä, yhteistyöehdotuksia tai haluatko liittyä tiimiin? Kerro meille!</p>
-
-      <div id="formContainer">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Etunimi</label>
-            <input class="form-input" type="text" placeholder="Matti" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Sukunimi</label>
-            <input class="form-input" type="text" placeholder="Virtanen" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Sähköposti</label>
-          <input class="form-input" type="email" placeholder="matti@email.fi" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Aihe</label>
-          <select class="form-select">
-            <option value="">Valitse aihe…</option>
-            <option>Liity käännöstiimiin</option>
-            <option>Yhteistyöehdotus</option>
-            <option>Fanart-lähetys</option>
-            <option>Palaute / kysymys</option>
-            <option>Muu</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Viesti</label>
-          <textarea class="form-textarea" placeholder="Kirjoita viestisi tähän…"></textarea>
-        </div>
-
-        <div class="form-check">
-          <input type="checkbox" id="newsletter" />
-          <label for="newsletter">Haluan tilata uutiskirjeen ja saada tiedon uusista luvuista ja blogikirjoituksista.</label>
-        </div>
-
-        <div class="submit-row">
-          <button class="submit-btn" onclick="submitForm()">Lähetä viesti ✈</button>
-          <span class="submit-note">Emme jaa tietojasi kolmansille osapuolille.</span>
-        </div>
+    <a class="link-card" href="https://daysneo.com/author/Sam333333Sam/" target="_blank" rel="noopener">
+      <div class="link-icon">🌙</div>
+      <div class="link-text">
+        <span class="link-name">DaysNEO</span>
+        <span class="link-desc">Manga publishing platform</span>
       </div>
+      <span class="link-arrow">›</span>
+    </a>
 
-      <div class="success-message" id="successMsg">
-        <div class="success-icon">❄️</div>
-        <h4>Viesti lähetetty!</h4>
-        <p style="color:var(--text-light);">Kiitos viestistäsi! Palaamme asiaan pian.</p>
-        <a href="index.html" class="btn btn-primary" style="margin-top:1rem;">Takaisin etusivulle</a>
+    <a class="link-card" href="https://www.pixiv.net/users/105728284" target="_blank" rel="noopener">
+      <div class="link-icon">🎨</div>
+      <div class="link-text">
+        <span class="link-name">Pixiv</span>
+        <span class="link-desc">Fan art & illustration</span>
       </div>
-    </div>
+      <span class="link-arrow">›</span>
+    </a>
 
   </div>
 
-  <!-- FAQ -->
-  <div style="margin-top: 3.5rem;">
-    <h2 class="section-title">Usein kysyttyä</h2>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Miten voin liittyä käännöstiimiin?
-          <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Täytä yhteydenottolomake ja valitse aiheeksi "Liity käännöstiimiin". Kerro meille kielitaidoistasi (japani/suomi) ja kiinnostuksestasi. Palaamme asiaan mahdollisimman pian!
-        </div>
+  <!-- Social & Other -->
+  <p class="section-label">🦋 Social & Other</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://bsky.app/profile/azaleaazalea88.bsky.social" target="_blank" rel="noopener">
+      <div class="link-icon">🦋</div>
+      <div class="link-text">
+        <span class="link-name">Bluesky</span>
+        <span class="link-desc">Updates & announcements</span>
       </div>
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Saako sivuillenne lähettää omaa fanartia?
-          <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Kyllä! Otamme mielellämme vastaan fanartia. Lähetä teos galleriaan yhteydenottolomakkeen kautta. Käymme kaikki lähetykset läpi ja julkaisemme ne galleriaosastolla.
-        </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://kakuyomu.jp/users/azalea_azalea72" target="_blank" rel="noopener">
+      <div class="link-icon">✒️</div>
+      <div class="link-text">
+        <span class="link-name">Kakuyomu</span>
+        <span class="link-desc">Fiction & writing</span>
       </div>
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Milloin uusia lukuja julkaistaan?
-          <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Julkaisurytmi vaihtelee sarjasta riippuen. Tilaa uutiskirjeemme tai seuraa meitä sosiaalisessa mediassa saadaksesi ilmoituksen heti kun uusi luku on saatavilla.
-        </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://www.youtube.com/@LilyPopins0512" target="_blank" rel="noopener">
+      <div class="link-icon">🎬</div>
+      <div class="link-text">
+        <span class="link-name">YouTube (LilyPopi)</span>
+        <span class="link-desc">Video channel</span>
       </div>
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          Saako käännöksiänne jakaa muualle?
-          <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Käännöksemme on tarkoitettu luettavaksi tällä sivustolla. Yksittäisten sivujen jakaminen ei-kaupallisessa tarkoituksessa on sallittua, kun mainitsette lähteen. Ota yhteyttä laajemmasta uudelleenjulkaisemisesta.
-        </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://lilipopi.github.io/lilypopins/" target="_blank" rel="noopener">
+      <div class="link-icon">🌸</div>
+      <div class="link-text">
+        <span class="link-name">LilyPopi Site</span>
+        <span class="link-desc">Separate website</span>
       </div>
-    </div>
+      <span class="link-arrow">›</span>
+    </a>
+
   </div>
 
-</div>
+  <!-- Azalea72's Websites -->
+  <p class="section-label">❄ Azalea72's Websites</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://azaleacreativeroom888.github.io/storyreviewazalea/" target="_blank" rel="noopener">
+      <div class="link-icon">📖</div>
+      <div class="link-text">
+        <span class="link-name">Story Review Site</span>
+        <span class="link-desc">Books, anime, movies, games & novels</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://azaleacreativeroom888.github.io/fan-watercolor/" target="_blank" rel="noopener">
+      <div class="link-icon">☁️</div>
+      <div class="link-text">
+        <span class="link-name">Watercolor Site</span>
+        <span class="link-desc">Watercolor painting gallery</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- Contact Form -->
+  <p class="section-label">📮 Send a Message</p>
+
+  <div class="form-card">
+    <p class="form-intro">
+      Questions, feedback, or just want to say hi? Send a message below.<br>
+      I'll reply by email as soon as I can. ❄️
+    </p>
+
+    <div data-fs-success class="form-success" style="display:none;">
+      <span class="form-success-icon">❄️</span>
+      Message sent — thank you!
+    </div>
+
+    <div data-fs-error class="form-error-global" style="display:none;"></div>
+
+    <form id="contact-form" action="https://formspree.io/f/maqvpvoz" method="POST">
+
+      <div class="form-group">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email <span class="required">*</span></label>
+        <input class="form-input" type="email" id="email" name="email" data-fs-field placeholder="example@email.com" required>
+        <span data-fs-error="email" class="field-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">Message <span class="required">*</span></label>
+        <textarea class="form-textarea" id="message" name="message" data-fs-field placeholder="Type your message here…" rows="6" required></textarea>
+        <span data-fs-error="message" class="field-error"></span>
+      </div>
+
+      <button class="form-submit" type="submit" data-fs-submit-btn>
+        📮 Send It!
+      </button>
+
+    </form>
+  </div>
+
+  <a class="back-link" href="index.html">← Back to Home</a>
+
+</main>
+
+<div class="stripe-bar"></div>
 
 <footer>
   <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
   <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
-  <p style="margin-top:0.4rem;"><a href="translation.html">Käännökset</a> · <a href="blog.html">Blogi</a></p>
+  <p style="margin-top:0.5rem;">Please do not use any images, text, or works on this site for AI training, tracing, unauthorized reproduction, redistribution, or secondary use.</p>
 </footer>
 
 <script>
-  function submitForm() {
-    document.getElementById('formContainer').style.display = 'none';
-    document.getElementById('successMsg').classList.add('show');
-  }
-
-  function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'maqvpvoz' });
 </script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
 </body>
 </html>

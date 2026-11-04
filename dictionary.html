@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>辞書 – Pohjoinen Manga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── STRIPE BAR ── */
+    .stripe-bar {
+      height: 14px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--sky)       0px,  var(--sky)       28px,
+        var(--midnight)  28px, var(--midnight)   56px,
+        var(--sky-light) 56px, var(--sky-light)  84px,
+        var(--sky-deep)  84px, var(--sky-deep)  112px
+      );
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      max-width: 1060px;
+      margin: 3rem auto 5rem;
+      padding: 0 2rem;
+      display: flex;
+      gap: 2.4rem;
+      align-items: flex-start;
+    }
+    .main-col    { flex: 3; min-width: 0; }
+    .sidebar-col { flex: 1; min-width: 180px; position: sticky; top: 84px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar-block {
+      background: #fff;
+      border: 2px solid var(--sky-light);
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 var(--sky-light);
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .sidebar-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sky-deep);
+      margin-bottom: .8rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--sky-pale);
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--midnight);
+      text-decoration: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      padding: .55rem .4rem;
+      border-bottom: 1px dashed var(--sky-pale);
+      border-radius: 6px;
+      transition: background .2s, color .2s, padding-left .2s;
+    }
+    .sidebar-link:last-child { border-bottom: none; }
+    .sidebar-link::before { content: '▶'; font-size: .6rem; color: var(--sky); flex-shrink: 0; }
+    .sidebar-link:hover { background: var(--sky-pale); color: var(--sky-deep); padding-left: .7rem; }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--sky-deep);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .9rem;
+      margin-bottom: 1.2rem;
+      padding: 8px 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color .2s;
+    }
+    .back-link:hover { border-color: var(--sky); }
+
+    /* ── SEARCH ── */
+    .search-wrap { position: relative; margin-bottom: .8rem; }
+
+    .search-input {
+      width: 100%;
+      background: #fff;
+      border: 3px solid var(--midnight);
+      border-radius: 10px;
+      box-shadow: 3px 3px 0 var(--sky-light);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      padding: 12px 44px 12px 16px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-input::placeholder { color: rgba(26,58,74,.3); font-weight: 600; }
+    .search-input:focus { border-color: var(--sky-deep); box-shadow: 3px 3px 0 var(--sky); }
+
+    .search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .result-count {
+      font-family: 'Playfair Display', serif;
+      font-size: .78rem;
+      color: var(--sky-deep);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      min-height: 1.2rem;
+    }
+
+    /* ── WORD CARDS ── */
+    .word-list { display: flex; flex-direction: column; gap: .8rem; }
+
+    .word-card {
+      background: #fff;
+      border: 3px solid var(--midnight);
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 var(--sky-light);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      position: relative;
+    }
+    .word-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: var(--sky);
+    }
+    .word-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--sky); }
+    .word-card.open  { border-color: var(--sky-deep); }
+
+    .word-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .85rem 1rem .85rem 1.4rem;
+      flex-wrap: wrap;
+    }
+    .word-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--midnight);
+      flex: 1;
+    }
+    .word-ja-label {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--sky-deep);
+    }
+    .word-pos {
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--sky-pale);
+      color: var(--sky-deep);
+      padding: 2px 9px;
+      border-radius: 4px;
+    }
+    .word-arrow {
+      font-size: 1rem;
+      color: var(--sky-deep);
+      flex-shrink: 0;
+      transition: transform .2s;
+      opacity: .8;
+    }
+    .word-card.open .word-arrow { transform: rotate(90deg); }
+
+    .word-detail {
+      display: none;
+      border-top: 1px dashed var(--sky-light);
+      margin: 0 1rem 0 1.4rem;
+    }
+    .word-card.open .word-detail { display: block; }
+
+    .word-meaning {
+      padding: .9rem 0;
+      font-size: .88rem;
+      line-height: 1.8;
+      color: var(--text);
+      border-bottom: 1px dashed var(--sky-light);
+    }
+
+    .word-example { padding: .8rem 0 1rem; font-size: .86rem; }
+    .word-example .ex-main {
+      font-style: italic;
+      color: var(--midnight);
+      font-weight: 700;
+      margin-bottom: 4px;
+      background: var(--sky-pale);
+      border-left: 4px solid var(--sky);
+      padding: 6px 12px;
+      border-radius: 0 6px 6px 0;
+    }
+    .word-example .ex-jp { color: var(--sky-deep); font-size: .82rem; margin-top: 6px; }
+
+    .no-result {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 0;
+      font-family: 'Playfair Display', serif;
+      font-size: .9rem;
+      color: var(--sky-deep);
+      opacity: .75;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 760px) {
+      .layout { flex-direction: column; padding: 0 1rem; }
+      .sidebar-col { position: static; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">Pohjoinen <span>Manga</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Etusivu</a></li>
+      <li><a href="translation.html" class="active">Käännökset</a></li>
+      <li><a href="blog.html">Blogi</a></li>
+      <li><a href="gallery.html">Galleria</a></li>
+      <li><a href="contact.html">Yhteystiedot</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="stripe-bar"></div>
+
+<div class="page-hero">
+  <h1>📖 <span>Sanakirja</span></h1>
+  <p>クリックで解説・例文を表示</p>
+</div>
+
+<div class="stripe-bar"></div>
+
+<div class="layout">
+
+  <!-- ── LEFT ── -->
+  <div class="main-col">
+    <a class="back-link" href="translation.html">← Käännökset に戻る</a>
+
+    <div class="search-wrap">
+      <input class="search-input" type="text" id="searchInput"
+        placeholder="単語を検索…" oninput="filterWords()" autocomplete="off">
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <p class="result-count" id="resultCount"></p>
+    <div class="word-list" id="wordList"></div>
+    <p class="no-result" id="noResult">見つかりませんでした。</p>
+  </div>
+
+  <!-- ── RIGHT: Sidebar ── -->
+  <aside class="sidebar-col">
+    <div class="sidebar-block">
+      <h3>📂 メニュー</h3>
+      <a class="sidebar-link" href="grammar.html">文法ノート</a>
+      <a class="sidebar-link" href="novel.html">小説翻訳</a>
+      <a class="sidebar-link" href="studyblog.html">勉強のひとことブログ</a>
+      <a class="sidebar-link" href="dictionary.html">辞書</a>
+    </div>
+  </aside>
+
+</div>
+
+<div class="stripe-bar"></div>
+
+<footer>
+  <div class="footer-pattern">❄ ✦ ❄ ✦ ❄</div>
+  <p>© 2026 Pohjoinen Manga · Kaikki oikeudet pidätetään</p>
+  <p style="margin-top:0.4rem;"><a href="index.html">Etusivu</a> · <a href="translation.html">Käännökset</a> · <a href="contact.html">Yhteystiedot</a></p>
+</footer>
+
+<script>
+  const words = [
+    { word: "kiitos", pos: "名詞・感嘆詞",
+      ja: "ありがとう・感謝",
+      meaning: "いちばん基本のお礼の言葉。kiitos paljon で「どうもありがとう」。くだけた場面では kiitti とも言う。お願いするときの「お願いします」の意味でも使える。",
+      exMain: "Kiitos paljon avusta!",
+      exJa: "手伝ってくれてどうもありがとう！" },
+
+    { word: "sisu", pos: "名詞",
+      ja: "不屈の精神・根性",
+      meaning: "フィンランド人の気質を表す代表的な言葉。苦しい状況でもあきらめずにやり抜く粘り強さのこと。他の言語にぴったり合う単語がないと言われる。",
+      exMain: "Hänellä on paljon sisua.",
+      exJa: "彼（彼女）には根性がある。" },
+
+    { word: "kaamos", pos: "名詞",
+      ja: "極夜",
+      meaning: "冬に太陽が地平線の上に昇らず、一日じゅう薄暗い期間。フィンランド北部のラップランドで見られる。",
+      exMain: "Lapissa on kaamos talvella.",
+      exJa: "ラップランドでは冬に極夜がある。" },
+
+    { word: "revontulet", pos: "名詞（複数形）",
+      ja: "オーロラ",
+      meaning: "直訳は「狐の火」。昔の言い伝えで、狐が雪原を走るときに尾から火花が散ってオーロラになると考えられていた。ふつう複数形で使う。",
+      exMain: "Näimme revontulet Lapissa.",
+      exJa: "私たちはラップランドでオーロラを見た。" },
+
+    { word: "sauna", pos: "名詞",
+      ja: "サウナ",
+      meaning: "フィンランド語が語源の単語。フィンランドでは家庭にもサウナがあり、生活に欠かせない存在。「〜へ行く」は saunaan（サウナへ）の形になる。",
+      exMain: "Menemme saunaan illalla.",
+      exJa: "私たちは夜にサウナへ行く。" },
+
+    { word: "lumi", pos: "名詞",
+      ja: "雪",
+      meaning: "語幹は lume- に変わる（lumessa = 雪の中で）。「雪が降る」は Lunta sataa で、lunta は「雪を」にあたる形（分格）。",
+      exMain: "Lunta sataa.",
+      exJa: "雪が降っている。" },
+
+    { word: "sarjakuva", pos: "名詞",
+      ja: "漫画・コミック",
+      meaning: "sarja（シリーズ）+ kuva（絵）でできた複合語。日本の漫画は manga とそのまま呼ぶことも多い。",
+      exMain: "Luen sarjakuvaa joka päivä.",
+      exJa: "私は毎日漫画を読む。" },
+
+    { word: "kääntää", pos: "動詞",
+      ja: "翻訳する・向きを変える",
+      meaning: "辞書に載る形（不定詞）は kääntää、「私は翻訳する」は käännän。「〜語に翻訳する」は suomeksi（フィンランド語に）のように -ksi をつける。",
+      exMain: "Käännän mangaa suomeksi.",
+      exJa: "私は漫画をフィンランド語に翻訳している。" },
+
+    { word: "kahvi", pos: "名詞",
+      ja: "コーヒー",
+      meaning: "フィンランドは一人あたりのコーヒー消費量が世界トップクラス。コーヒー休憩は kahvitauko と言う。",
+      exMain: "Juon kahvia aamulla.",
+      exJa: "私は朝にコーヒーを飲む。" },
+
+    { word: "kissa", pos: "名詞",
+      ja: "猫",
+      meaning: "「〜の上で」は -lla / -llä をつけて sohvalla（ソファの上で）のように言う。",
+      exMain: "Kissa nukkuu sohvalla.",
+      exJa: "猫がソファの上で寝ている。" },
+
+    { word: "hyvää huomenta", pos: "あいさつ",
+      ja: "おはよう",
+      meaning: "朝のあいさつ。くだけた言い方は huomenta だけ。昼以降の「こんにちは」は hyvää päivää。",
+      exMain: "Hyvää huomenta! Miten nukuit?",
+      exJa: "おはよう！よく眠れた？" },
+
+    /* 追加するときはここにコピペ
+    { word: "フィンランド語の単語", pos: "品詞",
+      ja: "日本語訳",
+      meaning: "解説文（ダブルクォートを使いたいときはシングルクォートで囲む）",
+      exMain: "例文（フィンランド語）",
+      exJa: "例文（日本語）" },
+    */
+  ];
+
+  let currentQuery = '';
+
+  function filterWords() {
+    currentQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+    const filtered = words.filter(w =>
+      !currentQuery ||
+      w.word.toLowerCase().includes(currentQuery) ||
+      w.ja.includes(currentQuery) ||
+      w.meaning.includes(currentQuery)
+    );
+    renderWords(filtered);
+  }
+
+  function renderWords(list) {
+    const container = document.getElementById('wordList');
+    const noResult  = document.getElementById('noResult');
+    const countEl   = document.getElementById('resultCount');
+
+    if (list.length === 0) {
+      container.innerHTML = '';
+      noResult.style.display = 'block';
+      noResult.textContent = '「' + currentQuery + '」は見つかりませんでした。';
+      countEl.textContent = '';
+      return;
+    }
+
+    noResult.style.display = 'none';
+    countEl.textContent = list.length + ' 件';
+
+    container.innerHTML = list.map(w => `
+      <div class="word-card" onclick="this.classList.toggle('open')">
+        <div class="word-header">
+          <span class="word-label">${w.word}</span>
+          <span class="word-pos">${w.pos}</span>
+          <span class="word-ja-label">${w.ja}</span>
+          <span class="word-arrow">›</span>
+        </div>
+        <div class="word-detail">
+          <div class="word-meaning">${w.meaning}</div>
+          ${w.exMain ? `
+          <div class="word-example">
+            <div class="ex-main">${w.exMain}</div>
+            <div class="ex-jp">${w.exJa || ''}</div>
+          </div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  filterWords();
+</script>
+
+</body>
+</html>
